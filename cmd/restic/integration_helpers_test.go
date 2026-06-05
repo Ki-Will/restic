@@ -270,9 +270,9 @@ func listTreePacks(gopts global.Options, t *testing.T) restic.IDSet {
 
 		rtest.OK(t, r.LoadIndex(ctx, nil))
 		treePacks = restic.NewIDSet()
-		return r.ListBlobs(ctx, func(pb restic.PackedBlob) {
-			if pb.Type == restic.TreeBlob {
-				treePacks.Insert(pb.PackID)
+		return r.ListBlobs(ctx, func(pb restic.PackBlob) {
+			if pb.Handle().Type == restic.TreeBlob {
+				treePacks.Insert(pb.PackID())
 			}
 		})
 	})
@@ -319,9 +319,9 @@ func removePacksExcept(gopts global.Options, t testing.TB, keep restic.IDSet, re
 		rtest.OK(t, r.LoadIndex(ctx, nil))
 
 		treePacks := restic.NewIDSet()
-		rtest.OK(t, r.ListBlobs(ctx, func(pb restic.PackedBlob) {
-			if pb.Type == restic.TreeBlob {
-				treePacks.Insert(pb.PackID)
+		rtest.OK(t, r.ListBlobs(ctx, func(pb restic.PackBlob) {
+			if pb.Handle().Type == restic.TreeBlob {
+				treePacks.Insert(pb.PackID())
 			}
 		}))
 
